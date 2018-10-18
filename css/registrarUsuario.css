@@ -1,0 +1,18 @@
+#titulo {
+	margin-top: 50px;
+	margin-bottom: 20px;
+	color: gray;
+	font-weight: bold;
+}
+
+#div-btn-registrar {
+ 	margin-top: 90px;
+}
+
+#div-btn-cancelar {
+	margin-top: 20px;
+}
+
+.btn {
+	width: 100%;
+}

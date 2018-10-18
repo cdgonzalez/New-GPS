@@ -1,0 +1,38 @@
+#div-buscar {
+	display: block;
+}
+
+#div-datos {
+	display: none;
+}
+
+#div-btn-buscar {
+	margin-top: 30px;
+}
+
+#div-btn-cancelar {
+	margin-top: 20px;
+}
+
+#div-btn-actualizar {
+	margin-top: 90px;
+}
+
+#div-btn-borrar {
+	margin-top: 20px;
+}
+
+#titulo1, #titulo2 {
+	margin-top: 50px;
+	margin-bottom: 20px;
+	color: gray;
+	font-weight: bold;
+}
+
+.btn {
+	width: 100%;
+}
+
+#btn-regresar {
+	margin-top: 50px;
+}
