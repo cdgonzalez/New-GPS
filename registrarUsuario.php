@@ -29,7 +29,7 @@ if ($_SESSION['Nombre'])
 
      <!-- Dropdown Contenido NavBar-->
             <ul id='opcionesN' class='dropdown-content'>
-                <li><a href="index.html">Cerrar Sesión</a></li>
+                <li><a href="index.php">Cerrar Sesión</a></li>
                 <li><a href="#!">Cambiar Contraseña</a></li>
                 <li><a href="#!">Cambiar Pregunta secreta</a></li>
             </ul>
@@ -59,7 +59,7 @@ if ($_SESSION['Nombre'])
 
    <!--Dropdown Contenido SideNav-->
             <ul id='opciones' class='dropdown-content'>
-                <li><a href="index.html">Cerrar Sesión</a></li>
+                <li><a href="index.php">Cerrar Sesión</a></li>
                 <li><a href="#!">Cambiar Contraseña</a></li>
                 <li><a href="#!">Cambiar Pregunta secreta</a></li>
             </ul>

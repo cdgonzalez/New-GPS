@@ -1,4 +1,4 @@
-var urlCancelar = "registrarUsuario.html";
+var urlCancelar = "registrarUsuario.php";
 var npropuestas = 0; //Mantiene un número constante que aumenta 1 a 1
 var nrealpropuestas = 0; //Es el número real de campos de texto que hay
 var ntotalpropuestas = "";

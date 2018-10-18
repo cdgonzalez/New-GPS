@@ -1,4 +1,4 @@
-var urlCancelar = "registrarUsuario.html";
+var urlCancelar = "registrarUsuario.php";
 var boton = 0;
 var seleccion = 0;
 var alumnos;

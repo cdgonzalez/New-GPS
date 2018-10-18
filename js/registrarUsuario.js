@@ -1,4 +1,4 @@
-var urlCancelar = "registrarUsuario.html";
+var urlCancelar = "registrarUsuario.php";
 
 $(document).ready(function(){
 	//Carga el combobox
