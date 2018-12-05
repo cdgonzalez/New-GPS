@@ -34,9 +34,10 @@ if ($_SESSION['Nombre'])
   <body>
 
 
+
      <!-- Dropdown Contenido NavBar-->
             <ul id='opcionesN' class='dropdown-content'>
-                <li><a href="index.php">Cerrar Sesión</a></li>
+                <li><a href="index.html">Cerrar Sesión</a></li>
                 <li><a href="#!">Cambiar Contraseña</a></li>
                 <li><a href="#!">Cambiar Pregunta secreta</a></li>
             </ul>
@@ -54,19 +55,19 @@ if ($_SESSION['Nombre'])
             </ul>
             <!--Dropdown Candidatos-->
             <ul id='dropCandiN' class="dropdown-content">
-                <li><a href="#!">Nuevo</a></li>
-                <li><a href="#!">Modificar</a></li>
+                <li><a href="altaCandidato.php">Registrar</a></li>
+                <li><a href="modificarCandidato.php">Modificar</a></li>
             </ul>
             <!--Dropdown Votaciones-->
             <ul id='dropVotN' class="dropdown-content">
-                <li><a href="#!">Nueva</a></li>
-                <li><a href="#!">Ver Votaciones</a></li>
+                <li><a href="nuevaVotacion.php">Nueva Votación</a></li>
+                <li><a href="verVotaciones.php">Ver Votaciones</a></li>
             </ul>
 
 
    <!--Dropdown Contenido SideNav-->
             <ul id='opciones' class='dropdown-content'>
-                <li><a href="index.php">Cerrar Sesión</a></li>
+                <li><a href="index.html">Cerrar Sesión</a></li>
                 <li><a href="#!">Cambiar Contraseña</a></li>
                 <li><a href="#!">Cambiar Pregunta secreta</a></li>
             </ul>
@@ -78,19 +79,19 @@ if ($_SESSION['Nombre'])
             </ul>
             <!--Dropdown Consejales-->
             <ul id='dropConse' class="dropdown-content">
-                <li><a href="#!">Registrar</a></li>
+                <li><a href="altaCandidato.php">Registrar</a></li>
                 <li><a href="modificarConcejal.php">Modificar</a></li>
 
             </ul>
             <!--Dropdown Candidatos-->
             <ul id='dropCandi' class="dropdown-content">
-                <li><a href="#!">Nuevo</a></li>
-                <li><a href="#!">Modificar</a></li>
+                <li><a href="altaCandidato.php">Registrar</a></li>
+                <li><a href="modificarCandidato.php">Modificar</a></li>
             </ul>
             <!--Dropdown Votaciones-->
             <ul id='dropVot' class="dropdown-content">
-                <li><a href="#!">Nueva</a></li>
-                <li><a href="#!">Ver Votaciones</a></li>
+                <li><a href="nuevaVotacion.php">Nueva Votación</a></li>
+                <li><a href="verVotaciones.php">Ver Votaciones</a></li>
             </ul>
 
 
@@ -237,12 +238,54 @@ if ($_SESSION['Nombre'])
           </div>
         </div>
     </section>
+      <!-- Modal Preguntas-->
+<div style="width: 25%; height: 60%;" id="modal2" class="modal">
+    <div class="modal-content">
+      <h4 style="font-size:25px;">Cambiar pregunta secreta</h4>
+      <p>Selecciona una pregunta y escribe tu respuest. <br>
+      Recuerda que con esta pregunta puedes recuperar tu contraseña.</p>
+    
+        <form action="php/cambioPregunta.php" method="POST" id="form2">
+            <div class="row">
+                <div class="input-field col m12 s12 l12">
+                    <select id="preguntas">
+                        <option value="" disabled selected>Elije tu pregunta</option>
+                        
+                    </select>
+                    <label for="">Pregunta Secreta</label>
+                </div>
+                <br>
+                <div class="input-field col m12 s12 l12">
+                    <input id="respuesta" type="text" class="validate" required>
+                    <label for="respuesta">Tu respuesta</label>
+                    <input type="hidden" id="custId" name="custId" value="<?php echo $_SESSION['Mat']; ?>">
+                </div>
+            </div>   
+        </form>
+    </div>
+    <div class="modal-footer center">
+      <div class="row">
+          <div class="col m12">
+            <input style="background-color: rgb(153,201,249);;" class="col m12 btn" type="submit" id="cambioPregunta" value=Listo><br>
+            <input style="background-color: rgb(255,128,128);" class="col m12 btn modal-close" type="submit" href="#!" value=Cancelar><br>
+          </div>
+      </div>
+    </div>
+</div>
+
   </body>
 
 
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>  
   <script src="js/modificarConcejal.js"></script>
 
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $('#modal2').modal(); 
+        
+    });
+</script>
+<script type="text/javascript" src="js/preguntasSecretas.js"></script>
 </html>

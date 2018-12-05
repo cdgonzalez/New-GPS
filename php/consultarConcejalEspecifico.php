@@ -1,11 +1,11 @@
 <?php
-session_start();
+	session_start();
 	$user = "postgres";
 	$password = "empoleon95";
 	$dbname = "votacionesBD";
 	$port = "5432";
 	$host = "localhost";
-    $matricula = $_POST['matricula'];
+    $carrera = $_POST['carrera'];
 	//Cadena para conexion
 	$cadenaConexion = "host=$host port=$port dbname=$dbname user=$user password=$password";
 
@@ -18,13 +18,17 @@ session_start();
 		$response["conexion"] = "Conexion Exitosa";
 
 
+	$qry = "SELECT a.matricula, a.nombre, c.foto, c.propuestas, c.periodo, c.activo FROM alumno a INNER JOIN consejal c ON a.matricula=c.matricula WHERE (a.carrera = $1) AND c.ganador = $2";
+
 	//Ejecuta qry
-	$resultado = pg_update($conn, 'consejal', array("activo" => $_POST["activo"]), array("matricula" => $_POST["matricula"]), PGSQL_DML_EXEC);
-  	if ($resultado) {
-      	$response["resultado"] = "Baja realizada con exito";
-  	} else {
-      	$response["resultado"] = "Error al dar de baja";
-  	}
+	$result = pg_query_params($conn, $qry, array("carrera" => $_POST["carrera"], 't'));
+
+	$resultado = array();
+	while ($row = pg_fetch_row($result)) {
+		array_push($resultado, $row);
+	}
+
+	$response["resultado"] = $resultado;
 
 	pg_close($conn);
 	echo json_encode($response);

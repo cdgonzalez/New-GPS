@@ -1,0 +1,26 @@
+#titulo1, #titulo2 {
+	margin-top: 50px;
+	margin-bottom: 20px;
+	color: gray;
+	font-weight: bold;
+}
+
+.card-image {
+	text-align: center;
+}
+
+#cam_video {
+	width: 100%;
+}
+
+#girarCamara {
+	margin-top: 20px;
+}
+
+#div-btn-cancelar {
+	margin-top: 20px;
+}
+
+.btn {
+	width: 100%;
+}

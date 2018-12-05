@@ -1,0 +1,11 @@
+En la carpeta php esta lo de consultarUsuario que es el mismo del sprint1
+
+En la BD tuve que modificar:
+	La columna id de la tabla votaciones para que fuera autoincrement 
+	Las columnas fecha_inicio y fecha_fin para que fueran de tipo timestamp without time zone
+	La columna ganador de la tabla cotaciones para que pueda ser nulo y por lo tanto tuve que quitar la llave foranea de esea columna
+
+(esto si quieres lo vemos el lunes, para ver bien como queda)
+En los js falta la especificar las url de la variables declaradas al inicio, no las puse ya que no se como se llaman algunas (ya que son algunas que te tocaron)
+
+Y falta lo de que el js de verificarCredencialQR y realizarVotacion reciba el noControl y carrera del alumno que inicia sesion, que no se como se haga (al buscar dice que dediante php pero no entiendo como)

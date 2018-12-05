@@ -1,4 +1,4 @@
-var urlCancelar = "registrarUsuario.php";
+var urlCancelar = "modificarCandidato.php";
 var npropuestas = 0; //Mantiene un número constante que aumenta 1 a 1
 var nrealpropuestas = 0; //Es el número real de campos de texto que hay
 var ntotalpropuestas = "";
@@ -11,7 +11,7 @@ var concejalSeleccionado;
 $(document).ready(function(){
     //Funcion para cargar combobox de año
     cargarAno();
-
+    
     //Cargar imagen
     $("#archivo").on("change", function() {
         $("#output")[0].src = (window.URL ? URL : webkitURL).createObjectURL(this.files[0]);
@@ -31,9 +31,9 @@ $(document).ready(function(){
         var parent = $("<div style='margin-top: 20px;' id='textarea"+(npropuestas + 1)+"'>");
         // Añadir div con el text_area
         var tarea_div = $("<div class='input-field col s11 m4 offset-m4' style='width: 75%; margin-left: auto'>");
-        var tarea = $("<textarea id='text-propuesta" + (npropuestas + 1) + "' class='materialize-textarea'>");
-        var tarea_label = $("<label for='textarea"+(npropuestas + 1)+"'>");
-        tarea_label.text("Propuesta #" + (npropuestas + 1));
+        var tarea = $("<textarea id='text-propuesta" + (npropuestas + 1) + "' class='materialize-textarea'><br>");
+        var tarea_label = $("<label style='margin-top: -15px;' for='text-propuesta"+(npropuestas + 1)+"'>");
+        tarea_label.text("Propuesta # " + (npropuestas + 1));
         tarea_div.append(tarea);
         tarea_div.append(tarea_label);
         // Añadir el botón de borrar
@@ -66,7 +66,7 @@ $(document).ready(function(){
             $.ajax({
                 type: "POST",
                 async: true,
-                url: "php/consultarConcejal.php",
+                url: "php/consultarCandidato.php",
                 timeout: 12000,
                 data: "busqueda=" + busqueda.toUpperCase(),
                 dataType: "json",
@@ -122,20 +122,28 @@ $(document).ready(function(){
                     data: form_data,
                     dataType: "json",
                     success: function (response) {
-                        archivo = response.nombre_archivo;
-                        $.ajax({
-                            type: "POST",
-                            async: true,
-                            url: "php/actualizarConcejal.php",
-                            timeout: 12000,
-                            data: "matricula=" + concejalSeleccionado[0] + "&periodo=" + periodo + "&imagen=" + archivo + "&propuestas=" + nvapropuestas,
-                            dataType: "json",
-                            success: function(response){
-                                if(response.resultado === "Actualizacion realizada con exito") {
-                                    window.open(urlCancelar, '_self');
+                        if(response.respuesta != "false"){
+                            archivo = response.nombre_archivo;
+                            $.ajax({
+                                type: "POST",
+                                async: true,
+                                url: "php/actualizarConcejal.php",
+                                timeout: 12000,
+                                data: "matricula=" + concejalSeleccionado[0] + "&periodo=" + periodo + "&imagen=" + archivo + "&propuestas=" + nvapropuestas,
+                                dataType: "json",
+                                success: function(response){
+                                    if(response.resultado === "Actualizacion realizada con exito") {
+                                        //window.open(urlCancelar, '_self');
+                                        Materialize.toast('Candidato actualizado con Exito', 4000);
+                                        npropuestas = 0;
+                                        nrealpropuestas = 0;
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }else{
+                            Materialize.toast("La imagen seleccionada esta corrupta, selecciona otra.", 4000);
+                        }
+                        
                     }
                 });
             }
@@ -186,7 +194,8 @@ $(document).ready(function(){
 
     //Funcion click del boton cancelar
     $('#btn-cancelar').click(function(){
-        window.open(urlCancelar, '_self');
+        $('#modal2').closeModal();
+        limpiarModal();
     });
 
     //Funcion click del boton cancelar
@@ -268,7 +277,7 @@ function concejalSelect(seleccionado) {
     $('#ano').material_select();
 
 
-    $('#titulo2').text("Datos de " + concejalSeleccionado[0] + ", " + concejalSeleccionado[1]);
+    $('#titulo2').text("Modificar a " + concejalSeleccionado[0] + ", " + concejalSeleccionado[1]);
     $('#output').attr('src','images/' + concejalSeleccionado[2]);
     tamañoImg();
 

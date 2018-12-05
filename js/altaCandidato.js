@@ -1,16 +1,19 @@
-var urlCancelar = "registrarUsuario.php";
+var urlCancelar = "altaCandidato.php";
 var npropuestas = 0; //Mantiene un número constante que aumenta 1 a 1
 var nrealpropuestas = 0; //Es el número real de campos de texto que hay
 var ntotalpropuestas = "";
+var imgvalida = false;
 var boton = 0;
-var imgvalida = true;
-var concejales;
-var matriculaBaja;
-var concejalSeleccionado;
+var alumnos;
+var alumnoSeleccionado;;
+
 
 $(document).ready(function(){
-    //Funcion para cargar combobox de año
+	//Funcion para cargar combobox de año
     cargarAno();
+
+    //Funcion para seleccionar periodo
+    cargaPeriodo();
 
     //Cargar imagen
     $("#archivo").on("change", function() {
@@ -22,6 +25,9 @@ $(document).ready(function(){
         if(extensiones.toUpperCase() != ".JPG" && extensiones.toUpperCase() != ".PNG") {
             Materialize.toast("Selecciona un archivo jpg o png válido", 4000);
             imgvalida = false;
+        }
+        else {
+            imgvalida = true;
         }
     });
 
@@ -53,7 +59,7 @@ $(document).ready(function(){
         ntotalpropuestas += npropuestas + "|";
     });
 
-    //Carga el combobox
+ 	//Carga el combobox
     $('#periodo').material_select();
     $('#ano').material_select();
 
@@ -66,18 +72,20 @@ $(document).ready(function(){
             $.ajax({
                 type: "POST",
                 async: true,
-                url: "php/consultarConcejal.php",
+                url: "php/consultarUsuario.php",
                 timeout: 12000,
                 data: "busqueda=" + busqueda.toUpperCase(),
                 dataType: "json",
                 success: function(response){
-                    concejales = response.resultado;
-                    if(concejales.length != 0) {
-                        for(var i = 0; i < concejales.length; i++) {
-                            var concejal = concejales[i];
+                    alumnos = response.resultado;
+                    if(alumnos.length != 0) {
+                        boton = 0;
+
+                        for(var i = 0; i < alumnos.length; i++) {
+                            var alumno = alumnos[i];
 
                             var parent_0 = $("#modal-content1");
-                            var parent = $("<button id='btn-select" + boton + "' class='btn btns blue' style='margin-top: 10px;'' onclick='concejalSelect(" + i + ")'>" + concejal[0] + " - " + concejal[1] + "</button>");
+                            var parent = $("<button id='btn-select" + boton + "' class='btn btns blue' style='margin-top: 10px;'' onclick='alumnoSelect(" + i + ")'>" + alumno[0] + " - " + alumno[1] + "</button>");
                             parent_0.append(parent);
                             boton++;
                         }
@@ -95,79 +103,57 @@ $(document).ready(function(){
             });
         }
         else {
+            //Cierra modal
+            $('#modal1').closeModal();
             Materialize.toast('No has ingresado ningún valor de búsqueda', 4000);
         }
     });
 
-    //Funcion click del boton actualizar
-    $('#btn-actualizar').click(function(){
+    //Funcion click del boton registrar
+    $('#btn-registrar').click(function(){
         var periodo = $('#periodo option:selected').text() + " " + $('#ano option:selected').text();
         var nombreArchivo = $('#nombre-archivo').val();
-        var nvapropuestas = propuesta();
+        var propuestas = propuesta();
         var archivo = $('#archivo');
         var form_data = new FormData();
         form_data.append('archivo_ajax', archivo[0].files[0]);
-        form_data.append('user_name', concejalSeleccionado[0]);
-        var archivo;
+        form_data.append('user_name', alumnoSeleccionado[0]);
 
-        if(imgvalida){
-            if(periodo != concejalSeleccionado[4] || nombreArchivo != concejalSeleccionado[2] || nvapropuestas != concejalSeleccionado[3]) {
-                $.ajax({
-                    type: "post",
-                    url: "php/subeImagen.php",
-                    async: true,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: form_data,
-                    dataType: "json",
-                    success: function (response) {
-                        archivo = response.nombre_archivo;
-                        $.ajax({
-                            type: "POST",
-                            async: true,
-                            url: "php/actualizarConcejal.php",
-                            timeout: 12000,
-                            data: "matricula=" + concejalSeleccionado[0] + "&periodo=" + periodo + "&imagen=" + archivo + "&propuestas=" + nvapropuestas,
-                            dataType: "json",
-                            success: function(response){
-                                if(response.resultado === "Actualizacion realizada con exito") {
-                                    window.open(urlCancelar, '_self');
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-            else {
-                window.open(urlCancelar, '_self');
-            }
-        }
-    });
-
-
-    //Funcion click del boton baja
-    $('#btn-baja').click(function(){
-        $('#modal2').openModal();
-
-        $('#si-borrar').click(function(){
-            //Cierra modal
-            $('#modal2').closeModal();
-
+        if(validaPeriodo(periodo) && validaPropuesta(propuestas) && imgvalida) {
             $.ajax({
-                type: "POST",
+                type: "post",
+                url: "php/subeImagen.php",
                 async: true,
-                url: "php/bajaConcejal.php",
-                timeout: 12000,
-                data: "matricula=" + concejalSeleccionado[0] + "&activo=" + false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
                 dataType: "json",
-                success: function(response){
-                    if(response.resultado === "Baja realizada con exito") {
-                        window.open(urlCancelar, '_self');
-                    }
+                success: function (response) {
+                    var nombreArchivo = response.nombre_archivo;
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: "php/altaCandidato.php",
+                        timeout: 12000,
+                        data: "matricula=" + alumnoSeleccionado[0] + "&periodo=" + periodo + "&imagen=" + nombreArchivo + "&propuestas=" + propuestas,
+                        dataType: "json",
+                        success: function(response){
+                            if(response.insercion === "Candidato registrado correctamente") {
+                                Materialize.toast("Candidato registrado con exito", 4000);
+                                window.open(urlCancelar, '_self');
+                            }
+                            else {
+                                Materialize.toast("Candidato ya registrado anteriormente", 4000);
+                            }
+                        }
+                    });
                 }
             });
-        });
+        }
+        else {
+            Materialize.toast("Hay campos con datos invalidos", 4000);
+        }
     });
 
     //Funcion click del boton regresar
@@ -183,7 +169,6 @@ $(document).ready(function(){
         nrealpropuestas = 0;
     });
 
-
     //Funcion click del boton cancelar
     $('#btn-cancelar').click(function(){
         window.open(urlCancelar, '_self');
@@ -194,6 +179,53 @@ $(document).ready(function(){
         window.open(urlCancelar, '_self');
     });
 });
+
+function validaPeriodo(periodo) {
+    if(periodo.length == 0) {
+        return false;
+    }
+
+    return true;
+}
+
+function validaPropuesta(propuesta) {
+    if(propuesta.length == 0) {
+        Materialize.toast("Por lo menos debes añadir una propuesta", 4000);
+        return false;
+    }
+
+    return true;
+}
+
+function cargarAno() {
+    var ano = (new Date).getFullYear();
+    var parent_0 = $("#ano");
+
+    for (var i = 2000; i <= ano; i++) {
+        var parent = $("<option value='"+i+"'>"+i+"</option>");
+        parent_0.append(parent);
+    }
+
+
+    $('#ano').val(ano);
+    $('#ano').material_select();
+    $('#ano').attr("disabled", "disabled");
+}
+
+function cargaPeriodo() {
+	var mes = (new Date).getMonth() + 1;
+	
+	if(mes < 7) {
+		$('#periodo').val('1');
+        $('#periodo').material_select();
+    }
+    else {
+        $('#periodo').val('2');
+        $('#periodo').material_select();
+    }
+
+    $('#periodo').attr("disabled", "disabled");
+}
 
 function cerrar(numero){
     // Elimina el div con el campo de texto
@@ -216,16 +248,6 @@ function cerrarTP(numero) {
     tarea_div.remove();
 }
 
-function cargarAno() {
-    var ano = (new Date).getFullYear();
-    var parent_0 = $("#ano");
-
-    for (var i = 2000; i <= ano; i++) {
-        var parent = $("<option value='"+i+"'>"+i+"</option>");
-        parent_0.append(parent);
-    }
-}
-
 function tamañoImg() {
     var w = $("#buscarArchivo").width();
     w = w -(w*0.2);
@@ -233,59 +255,15 @@ function tamañoImg() {
     $("#output").css("height", w);
 }
 
-function concejalSelect(seleccionado) {
+function alumnoSelect(seleccionado) {
     $('#modal1').closeModal();
     $('#div-buscar').css("display", "none");
     $('#div-datos').css("display", "block");
-    $('#div-btn-datos').css("display", "block");
     $('#busqueda').val("");
     limpiarModal();
 
-    concejalSeleccionado = concejales[seleccionado];
-    matriculaBaja = concejalSeleccionado[0];
-
-    var i;
-    var per = concejalSeleccionado[4];
-    var periodo = "";
-    var year = "";
-    for(i = 0; i < 7; i++) {
-        periodo += per[i];
-    }
-    for(var j = i+1; j < per.length; j++) {
-        year += per[j];
-    }
-
-    if(periodo === "ENE-JUN") {
-        $('#periodo').val('1');
-        $('#periodo').material_select();
-    }
-    else {
-        $('#periodo').val('1');
-        $('#periodo').material_select();
-    }
-
-    $('#ano').val(year);
-    $('#ano').material_select();
-
-
-    $('#titulo2').text("Datos de " + concejalSeleccionado[0] + ", " + concejalSeleccionado[1]);
-    $('#output').attr('src','images/' + concejalSeleccionado[2]);
-    tamañoImg();
-
-    if(concejalSeleccionado[5] === "f") {
-        $('#btn-baja').attr("disabled", true);
-    }
-
-    $("#nombre-archivo").val(concejalSeleccionado[2]);
-
-    if(concejalSeleccionado[3] != null) {
-        var propuestas = concejalSeleccionado[3].split("|");
-
-        for(var i = 0; i < propuestas.length; i++) {
-            $("#btn-add").click();
-            $("#text-propuesta" + npropuestas).text(propuestas[i]);
-        }
-    }
+    alumnoSeleccionado = alumnos[seleccionado];
+    $('#titulo2').text("Dar de alta a  " + alumnoSeleccionado[1] + ", " + alumnoSeleccionado[0] + " como candidato");
 }
 
 function limpiarModal() {
@@ -295,27 +273,26 @@ function limpiarModal() {
 }
 
 function propuesta() {
-    var nvapropuestas = "";
+    var propuestas = "";
 
     if(nrealpropuestas != 0) {
         var no = ntotalpropuestas.split("|");
 
         for(var i = 0; i < no.length-1; i++) {
-            nvapropuestas += $("#text-propuesta" + no[i]).val();
+            propuestas += $("#text-propuesta" + no[i]).val();
 
             if((i+1) != no.length-1) {
-                nvapropuestas += "|";
+                propuestas += "|";
             }
         }
     }
 
     var tmp = "";
-    for(var i = 0; i < nvapropuestas.length; i++) {
-        tmp += nvapropuestas[i];
+    for(var i = 0; i < propuestas.length; i++) {
+        tmp += propuestas[i];
     }
 
-    nvapropuestas = tmp;
+    propuestas = tmp;
 
-    return nvapropuestas;
+    return propuestas;
 }
-

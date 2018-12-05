@@ -1,11 +1,12 @@
 <?php
-session_start();
+	session_start();
 	$user = "postgres";
 	$password = "empoleon95";
 	$dbname = "votacionesBD";
 	$port = "5432";
 	$host = "localhost";
-    $matricula = $_POST['matricula'];
+    $id = $_POST['id_votacion'];
+
 	//Cadena para conexion
 	$cadenaConexion = "host=$host port=$port dbname=$dbname user=$user password=$password";
 
@@ -17,13 +18,12 @@ session_start();
 	else
 		$response["conexion"] = "Conexion Exitosa";
 
-
 	//Ejecuta qry
-	$resultado = pg_update($conn, 'consejal', array("activo" => $_POST["activo"]), array("matricula" => $_POST["matricula"]), PGSQL_DML_EXEC);
+	$resultado = pg_delete($conn, 'votaciones', array("id" => $_POST['id_votacion']));
   	if ($resultado) {
-      	$response["resultado"] = "Baja realizada con exito";
+      	$response["resultado"] = "Actualizacion realizada con exito";
   	} else {
-      	$response["resultado"] = "Error al dar de baja";
+      	$response["resultado"] = "Error al actualizar";
   	}
 
 	pg_close($conn);

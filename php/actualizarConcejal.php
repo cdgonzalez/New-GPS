@@ -19,9 +19,10 @@
 		$response["conexion"] = "Conexion Exitosa";
 
 	//Ejecuta qry
-	$resultado = pg_update($conn, 'concejal', array("foto" => $_POST["imagen"], "propuestas" => $_POST["propuestas"], "periodo" => $_POST["periodo"]), array("matricula" => $_POST["matricula"]), PGSQL_DML_EXEC);
+	$resultado = pg_update($conn, 'consejal', array("foto" => $_POST["imagen"], "propuestas" => $_POST["propuestas"], "periodo" => $_POST["periodo"]), array("matricula" => $_POST["matricula"]), PGSQL_DML_EXEC);
   	if ($resultado) {
-      	$response["resultado"] = "Actualizacion realizada con exito";
+		  $response["resultado"] = "Actualizacion realizada con exito";
+		  $response["alv"] = $_POST["propuestas"];
   	} else {
       	$response["resultado"] = "Error al actualizar";
   	}

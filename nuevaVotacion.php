@@ -1,19 +1,16 @@
-<?php
-session_start(); //Iniciamos la Sesion o la Continuamos
-if ($_SESSION['Nombre'])
-{
-
+<?php 
+session_start(); //Iniciamos la sesion o se continua.
+if ($_SESSION['Nombre']){
+    
 }
-
 ?>
 
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
+<html>
+	<head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administrador</title>
+    <title>Nueva votacion</title>
+    <link rel="stylesheet" href="css/nuevaVotacion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -26,9 +23,10 @@ if ($_SESSION['Nombre'])
         crossorigin="anonymous"></script>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<body>
 
+  </head>
+
+  <body>
 
 
 
@@ -118,34 +116,75 @@ if ($_SESSION['Nombre'])
     </nav>
 
 
-<div class="row">
-    <div class="col m12 l12">
-        <h2 class="left" style="color: #e0e0e0;">Bienvenido,<?php echo $_SESSION['Nombre']; ?></h2>
-    </div>
-    <div class="col m12 l12">
-        <p>Desde esta pagina será capáz de controlar funciones administrativas de este sistema. <br>
-           Si existe mas de un administrador, él será capáz de hacer las mismas funciones que tú.</p>
 
-    </div>
-</div>
 
-<div class="page-footer white" style="margin-top:23%;  ">
-     <div class="row">
-      <div class="col s9 ">
-          <span>
-              <p style="color:black;">Copyright 2018 Sistema de Votos CEITM by ManSoft</p>
-          </span>
-      </div>
-      <div class="col s2 offset-s1">
-          <img width="75px" height="75px" src="images/logo.jpg" class="image-responsive" alt="logo">
-      </div>
-  </div>
-</div>
-  <!-- Modal Preguntas-->
-  <div style="width: 25%; height: 60%;" id="modal2" class="modal">
+		<div id="modal" class="modal">
+			<div id="modal-content" class="modal-content">
+				<span id="mensajeInicio" style="font-size: 20px;"></span>
+			</div>
+			<div class="modal-footer">
+				<a id="ok" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+			</div>
+		</div>
+
+		<section class="container">
+			<div id="div-buscar" class="row">
+				<div class="col s12 m6 offset-m3">
+					<h5 id="titulo1">Crear votacion</h5>
+
+					<div class="input-field">
+						<select id="carrera">
+							<option value="0" disabled selected>Seleccionar una de las carreras</option>
+							<option value="1">Ing. Sistemas Computacionales</option>
+							<option value="2">Ing. Informatica</option>
+							<option value="3">Ing. Tecnologias de la Informacion</option>
+							<option value="4">Ing. Industrial</option>
+							<option value="5">Ing. Gestion Empresarial</option>
+							<option value="6">Lic. Administracion</option>
+							<option value="7">Ing. Electrica</option>
+							<option value="8">Lic. Contador Publico</option>
+							<option value="9">Ing. Bioquimica</option>
+							<option value="10">Ing. Electronica</option>
+							<option value="11">Ing. Mecatronica</option>
+							<option value="12">Ing. Mecanica</option>
+							<option value="13">Ing. Materiales</option>
+						</select>
+					</div>
+
+					<div class="input-field">
+						<div id="div-fecha" class="col s6 m6">
+							<input id="fechaInicio" type="text" name="fechaInicio" placeholder="Fecha inicio" class="datepicker">
+						</div>
+						<div id="div-hora" class="col s6 m6">
+							<input id="horaInicio" type="text" name="horaInicio" placeholder="Hora inicio" class="timepicker">
+						</div>
+					</div>
+
+					<div class="input-field">
+						<div id="div-fecha" class="col s6 m6">
+							<input id="fechaFin" type="text" name="fechaFin" placeholder="Fecha fin" class="datepicker">
+						</div>
+						<div id="div-hora" class="col s6 m6">
+							<input id="horaFin" type="text" name="horaFin" placeholder="Hora fin" class="timepicker">
+						</div>
+					</div>
+
+					<div id="div-btn-comenzar">
+						<button id="btn-comenzar" class="btn blue" href="#modal">Comenzar</button>
+					</div>
+
+					<div id="div-btn-cancelar">
+						<button id="btn-cancelar" class="btn red">Cancelar</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+        <!-- Modal Preguntas-->
+<div style="width: 25%; height: 60%;" id="modal2" class="modal">
     <div class="modal-content">
       <h4 style="font-size:25px;">Cambiar pregunta secreta</h4>
-      <p>Selecciona una pregunta y escribe tu respuesta. <br>
+      <p>Selecciona una pregunta y escribe tu respuest. <br>
       Recuerda que con esta pregunta puedes recuperar tu contraseña.</p>
     
         <form action="php/cambioPregunta.php" method="POST" id="form2">
@@ -175,16 +214,12 @@ if ($_SESSION['Nombre'])
       </div>
     </div>
 </div>
+	</body>
 
-
-
-</body>
-
-
-    
-<script type="text/javascript" src="js/moment.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<!-- Compiled and minified JavaScript -->
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>  
 <script type="text/javascript">
     $(document).ready(function(){
@@ -194,7 +229,7 @@ if ($_SESSION['Nombre'])
 </script>
 <script type="text/javascript" src="js/preguntasSecretas.js"></script>
   
-       <script type="text/javascript" src="js/moment.js"></script>
-       <script type="text/javascript" src="js/listaVotaciones.js"></script>
-    
+	<script src="js/nuevaVotacion.js"></script>
+	
+
 </html>

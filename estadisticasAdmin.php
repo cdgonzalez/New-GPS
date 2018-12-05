@@ -13,9 +13,10 @@ if ($_SESSION['Nombre'])
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administrador</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
+    <title>Estadisticas</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link rel="stylesheet" href="css/modificarConcejal.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -26,10 +27,10 @@ if ($_SESSION['Nombre'])
         crossorigin="anonymous"></script>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<body>
 
+  </head>
 
+  <body>
 
 
 
@@ -37,7 +38,7 @@ if ($_SESSION['Nombre'])
      <ul id='opcionesN' class='dropdown-content'>
                 <li><a href="index.html">Cerrar Sesión</a></li>
                 <li><a href="#!">Cambiar Contraseña</a></li>
-                <li><a class="modal-trigger" href="#modal2">Cambiar Pregunta secreta</a></li>
+                <li><a class="modal-trigger" href="#modal3">Cambiar Pregunta secreta</a></li>
             </ul>
             <!--Dropdown Usuarios-->
             <ul id='dropUserN' class="dropdown-content">
@@ -67,7 +68,7 @@ if ($_SESSION['Nombre'])
             <ul id='opciones' class='dropdown-content'>
                 <li><a href="index.html">Cerrar Sesión</a></li>
                 <li><a href="#!">Cambiar Contraseña</a></li>
-                <li><a class="modal-trigger" href="#modal2">Cambiar Pregunta secreta</a></li>
+                <li><a class="modal-trigger" href="#modal3">Cambiar Pregunta secreta</a></li>
             </ul>
             <!--Dropdown Usuarios-->
             <ul id='dropUser' class="dropdown-content">
@@ -117,14 +118,25 @@ if ($_SESSION['Nombre'])
       </div>
     </nav>
 
+ <div id="modal2" class="modal">
+      <div id="modal-content2" class="modal-content">
+      <span>¿Estas Seguro?</span>
+      </div>
+      <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">cancelar</a>
+        <a id="si-borrar" class=" modal-action modal-close waves-effect waves-green btn-flat">Si</a>
+      </div>
+    </div>
+
 
 <div class="row">
-    <div class="col m12 l12">
-        <h2 class="left" style="color: #e0e0e0;">Bienvenido,<?php echo $_SESSION['Nombre']; ?></h2>
+    <div id="estadistica" class="col m12 l12">
+        
     </div>
     <div class="col m12 l12">
-        <p>Desde esta pagina será capáz de controlar funciones administrativas de este sistema. <br>
-           Si existe mas de un administrador, él será capáz de hacer las mismas funciones que tú.</p>
+        <div class="row" id="esta">
+            
+        </div>
 
     </div>
 </div>
@@ -141,11 +153,12 @@ if ($_SESSION['Nombre'])
       </div>
   </div>
 </div>
-  <!-- Modal Preguntas-->
-  <div style="width: 25%; height: 60%;" id="modal2" class="modal">
+
+<!-- Modal Preguntas-->
+<div style="width: 25%; height: 60%;" id="modal3" class="modal">
     <div class="modal-content">
       <h4 style="font-size:25px;">Cambiar pregunta secreta</h4>
-      <p>Selecciona una pregunta y escribe tu respuesta. <br>
+      <p>Selecciona una pregunta y escribe tu respuest. <br>
       Recuerda que con esta pregunta puedes recuperar tu contraseña.</p>
     
         <form action="php/cambioPregunta.php" method="POST" id="form2">
@@ -176,25 +189,21 @@ if ($_SESSION['Nombre'])
     </div>
 </div>
 
-
-
 </body>
 
 
-    
-<script type="text/javascript" src="js/moment.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>  
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#modal2').modal(); 
+        $('#modal3').modal(); 
         
     });
 </script>
 <script type="text/javascript" src="js/preguntasSecretas.js"></script>
   
        <script type="text/javascript" src="js/moment.js"></script>
-       <script type="text/javascript" src="js/listaVotaciones.js"></script>
+       <script type="text/javascript" src="js/estadisticasAdmin.js"></script>
     
 </html>

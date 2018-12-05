@@ -1,13 +1,15 @@
 <?php
 	//Valores para la conexion
-session_start();
+    session_start();
 	$user = "postgres";
 	$password = "empoleon95";
 	$dbname = "votacionesBD";
 	$port = "5432";
 	$host = "localhost";
     $matricula = $_POST['matricula'];
-    $pin = $_POST['pin'];
+    $pregunta = $_POST['pregunta'];
+    $respuesta = $_POST['matricula'];
+    
 
 
 
@@ -22,13 +24,23 @@ session_start();
 		$response["conexion"] = "Conexion Exitosa";
 
 	//Ejecuta qry
-	$resultado = pg_query($conn, "Select * FROM alumno where matricula = '$matricula'");
+    //Obtener id de la pregunta
+    $query = 'SELECT id FROM public."PS" WHERE "PS"."Pregunta" = $1';
+    $res = pg_query_params($conn, $query, array("Pregunta" => $_POST['pregunta']));
+    while($ren = pg_fetch_row($res)){
+        $id = $ren[0];
+    }
+    $resultado = pg_update($conn, 'alumno', array( "PS" => $id, "PR" => $_POST['respuesta']), array("matricula" => $_POST["matricula"]), PGSQL_DML_EXEC);
 
     if (!$resultado) {
       	$response["resultado"] = "Error al actualizar";
     }
 
-    while ($row = pg_fetch_row($resultado)) {
+    $qry = "SELECT * FROM alumno WHERE matricula = $1";
+
+	//Ejecuta qry
+	$result = pg_query_params($conn, $qry, array("matricula" => $_POST["matricula"]));
+    while ($row = pg_fetch_row($result)) {
         $response['matricula'] = $row[0];
         $response['nombre'] = $row[1];
         $response['carrera'] = $row[2];
@@ -37,24 +49,12 @@ session_start();
         $response['pr'] = $row[5];
         $response['voto'] = $row[6];
         $response['admin'] = $row[7];
-
+        
     }
-    if(strcmp($pin, $response['pin']) === 0){
-        if($response['admin'] == 'f'){
-            pg_close($conn);
-            $response['resultado'] = "NoAdmin";
-        }else{
-            pg_close($conn);
-            $response['resultado'] = "Admin";
-        }
-
-    }else{
-
-        $response['resultado'] = "No coinciden";
-    }
+    
+    
     $_SESSION['Nombre'] = $response['nombre'];
     $_SESSION['Mat'] =  $response['matricula'];
     $_SESSION['Con'] = $response['pin'];
-    $_SESSION['Carrera'] = $response['carrera'];
      echo json_encode($response);
 ?>

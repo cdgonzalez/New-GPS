@@ -1,0 +1,1 @@
+insert into consejal (matricula,foto,propuestas, periodo, ganador,activo) values ('14121455','lalito.jpg','Mejorar el reciclaje de la basura, en la pony plaza','ENE-JUN',null,true)

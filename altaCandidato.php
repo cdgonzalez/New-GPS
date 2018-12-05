@@ -8,14 +8,13 @@ if ($_SESSION['Nombre'])
 ?>
 
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
+<html>
+    <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Administrador</title>
+    <title>Alta de un candidato</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link rel="stylesheet" href="css/altaCandidato.css">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -26,9 +25,10 @@ if ($_SESSION['Nombre'])
         crossorigin="anonymous"></script>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<body>
 
+  </head>
+
+  <body>
 
 
 
@@ -118,34 +118,93 @@ if ($_SESSION['Nombre'])
     </nav>
 
 
-<div class="row">
-    <div class="col m12 l12">
-        <h2 class="left" style="color: #e0e0e0;">Bienvenido,<?php echo $_SESSION['Nombre']; ?></h2>
-    </div>
-    <div class="col m12 l12">
-        <p>Desde esta pagina será capáz de controlar funciones administrativas de este sistema. <br>
-           Si existe mas de un administrador, él será capáz de hacer las mismas funciones que tú.</p>
 
-    </div>
-</div>
 
-<div class="page-footer white" style="margin-top:23%;  ">
-     <div class="row">
-      <div class="col s9 ">
-          <span>
-              <p style="color:black;">Copyright 2018 Sistema de Votos CEITM by ManSoft</p>
-          </span>
-      </div>
-      <div class="col s2 offset-s1">
-          <img width="75px" height="75px" src="images/logo.jpg" class="image-responsive" alt="logo">
-      </div>
-  </div>
-</div>
-  <!-- Modal Preguntas-->
-  <div style="width: 25%; height: 60%;" id="modal2" class="modal">
+ 
+
+	    <div id="modal1" class="modal">
+	      <div id="modal-content1" class="modal-content">
+	      </div>
+	    </div>
+
+	    <section class="container">
+		    <div id="div-buscar" class="row">
+		        <div class="col s12 m6 offset-m3">
+		          <h5 id="titulo1">Alta candidato</h5>
+
+		          <div class="input-field">
+		            <input id="busqueda" type="text" name="buscarMN" placeholder="Ingrese matricula o nombre a buscar...">
+		          </div>
+
+		          <div id="div-btn-buscar">
+		            <button id="btn-buscar" class="btn btns green" href="#modal1">Buscar</button>
+		          </div>
+
+		          <div id="div-btn-cancelar">
+		            <button id="btn-cancelar" class="btn btns grey">Cancelar</button>
+		          </div>
+		        </div>
+		    </div>
+
+	      	<div id="div-datos" class="row">
+		        <div class="col s12 m3">
+		          <button id="btn-regresar" class="btn btns grey">Regresar a busqueda</button>
+		        </div>
+		        
+		        <div class="col s12 m6">
+		          	<h5 id="titulo2" class="center-align">Dar de alta a [Nombre completo, Matricula]</h5>
+
+		          	<div class="card-image">
+		            	<img id="output" src="images/sinFoto.jpg">
+		          	</div>
+
+		          	<div id="buscarArchivo" class="file-field input-field">
+		           	 	<div class="btn">
+		              		<span>Buscar</span>
+		              		<input id="archivo" type="file" accept=".png,.jpg">
+		            	</div>
+		            	<div class="file-path-wrapper">
+		              		<input id="nombre-archivo" class="file-path validate" type="text" placeholder="Fotografia">
+		            	</div>
+		          	</div>
+
+		          	<div class="input-field col s12 m6">
+		            	<select id="periodo">
+		              		<option value="0" disabled selected>Periodo</option>
+			              	<option value="1">ENE-JUN</option>
+			              	<option value="2">AGO-DIC</option>
+			            </select>
+		          	</div>
+
+		          	<div class="input-field col s12 m6">
+		            	<select id="ano">
+		              		<option value="0" disabled selected>Año</option>
+		            	</select>
+		          	</div>
+	        	</div>
+
+	        	<div id="div-btn-añadir" class="col s12 m3">
+	          		<button id="btn-add" class="btn blue">Añadir propuesta</button>
+		          	<div id="div_propuestas" class="row"></div>
+	        	</div>
+
+	        	<div id="div-btn-datos" class="col s12 m6 offset-m3">
+	          		<div id="div-btn-registrar">
+	              		<button id="btn-registrar" class="btn btns blue">Registrar</button>
+	            	</div>
+
+	            	<div id="div-btn-cancelar">
+	              		<button id="btn-cancelar2" class="btn btns red">Cancelar</button>
+	            	</div>           
+	          	</div>
+	        </div>
+	    </section>
+
+       <!-- Modal Preguntas-->
+<div style="width: 25%; height: 60%;" id="modal2" class="modal">
     <div class="modal-content">
       <h4 style="font-size:25px;">Cambiar pregunta secreta</h4>
-      <p>Selecciona una pregunta y escribe tu respuesta. <br>
+      <p>Selecciona una pregunta y escribe tu respuest. <br>
       Recuerda que con esta pregunta puedes recuperar tu contraseña.</p>
     
         <form action="php/cambioPregunta.php" method="POST" id="form2">
@@ -177,24 +236,20 @@ if ($_SESSION['Nombre'])
 </div>
 
 
+	</body>
 
-</body>
 
-
-    
-<script type="text/javascript" src="js/moment.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>  
-<script type="text/javascript">
+	<script src="js/altaCandidato.js"></script>
+    <script type="text/javascript">
     $(document).ready(function(){
+    
         $('#modal2').modal(); 
         
     });
 </script>
-<script type="text/javascript" src="js/preguntasSecretas.js"></script>
-  
-       <script type="text/javascript" src="js/moment.js"></script>
-       <script type="text/javascript" src="js/listaVotaciones.js"></script>
-    
+    <script type="text/javascript" src="js/preguntasSecretas.js"></script>
+	
 </html>

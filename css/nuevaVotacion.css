@@ -1,0 +1,28 @@
+#titulo1, #titulo2 {
+	margin-top: 50px;
+	margin-bottom: 20px;
+	color: gray;
+	font-weight: bold;
+}
+
+.btn {
+	width: 100%;
+}
+
+#div-fecha {
+	padding: 0px;
+	padding-right: 5px;
+}
+
+#div-hora {
+	padding: 0px;
+	padding-left: 5px;
+}
+
+#div-btn-comenzar {
+	margin-top: 150px;
+}
+
+#div-btn-cancelar {
+	margin-top: 20px;
+}
